@@ -31,13 +31,14 @@
  *      BEREKEN gemmiddelde (totaal / aantalIngegevenRes);
  *      BEREKEN laagsteGetal;
  *      BEREKEN grootsteGetal;
- *      BEREKEN isGeslaagd 
+ *      BEREKEN onvoldoendes
+ *      BEREKEN geslaagdOfNiet 
  *      (
  *      NIET GESLAAGD = gemiddelde < 50 % of meer dan 1 buis;
  *      GESLAAGD = max 1 buis, gemiddelde >= 50% of <= 70%;
  *      ONDERSCHEIDING = gemiddelde >= 70%, geen buizen;
  *      )
- *      BEREKEN einde (naam + aantalIngegevenRes + gemiddelde + laagsteGetal + grootsteGetal + isGeslaagd);
+ *      BEREKEN einde (naam + aantalIngegevenRes + gemiddelde + laagsteGetal + grootsteGetal + geslaagdOfNiet);
  *  )
  *  
  * TOON einde;
@@ -56,10 +57,10 @@ namespace Statistiek
         static void Main(string[] args)
         {
             //DECLARATION
-            string voornaam, familienaam, res, naam, einde;
-            byte resultaat, aantalIngegevenRes = 1;
-            ushort totaal, gemiddelde, laagsteGetal, grootsteGetal;
-            bool isGeslaagd, isResultaatOk;
+            string voornaam, familienaam, res, naam, geslaagdOfNiet, einde;
+            byte aantalIngegevenRes = 1, onvoldoendes = 0;
+            float resultaat, gemiddelde, laagsteGetal, grootsteGetal, totaal = 0;
+            bool isResultaatOk;
 
 
             //INPUT
@@ -78,7 +79,17 @@ namespace Statistiek
             {
                 // resultaten blijven vragen tot het leeg word gelaten
                 res = Vraag("Geef het resultaat/de resultaten in, in procent (max 1 getal na komma): ");
-                
+
+                // Berkenen totaal (totaal += resultaat)
+                resultaat = float.Parse(res);
+                totaal +=  resultaat;
+
+                // Berkenen onvoldoendes
+                if (resultaat < 50)
+                {
+                    onvoldoendes += 1;
+                }
+
                 // Bereken aantal resultaten dat worden ingegeven
                 aantalIngegevenRes += 1;
 
@@ -86,24 +97,46 @@ namespace Statistiek
                 {
                     // Bereken naam (eerste letter voornaam in hoofdletter + ". " + achternaam in hoofdletters)
                     naam = voornaam.Substring(0, 1).ToUpper() + ". " + familienaam.ToUpper();
-                    //BEREKEN totaal (totaal += resultaat);
 
-                    //BEREKEN aantalIngegevenRes;
-                    
-                    //BEREKEN gemmiddelde (totaal / aantalIngegevenRes);
-                    
-                    //BEREKEN laagsteGetal;
-                    
-                    //BEREKEN grootsteGetal;
-                    
-                    //BEREKEN isGeslaagd 
+                    // Berkenen gemmiddelde (totaal / aantalIngegevenRes)
+                    gemiddelde = totaal / aantalIngegevenRes;
+
+                    // Berkenen laagsteGetal
+
+
+                    // Berkenen grootsteGetal
+
+
+                    // Berkenen isGeslaagd 
                     //(
-                    //NIET GESLAAGD = gemiddelde < 50 % of meer dan 1 buis;
-                    //GESLAAGD = max 1 buis, gemiddelde >= 50% of <= 70%;
-                    //ONDERSCHEIDING = gemiddelde >= 70%, geen buizen;
+                    //  NIET GESLAAGD = gemiddelde < 50 % of meer dan 1 buis
+                    //  GESLAAGD = max 1 buis, gemiddelde >= 50% of <= 70%
+                    //  ONDERSCHEIDING = gemiddelde >= 70%, geen buizen
                     //)
-                    
-                    //BEREKEN einde (naam + aantalIngegevenRes + gemiddelde + laagsteGetal + grootsteGetal + isGeslaagd);
+                    if (gemiddelde < 50 || onvoldoendes > 1)
+                    {
+                        geslaagdOfNiet = "Niet geslaagd!";
+                    }
+                    else if (onvoldoendes <= 1 && (gemiddelde >= 50 || gemiddelde <= 70))
+                    {
+                        geslaagdOfNiet = "Geslaagd!";
+                    }
+                    else if (gemiddelde >= 70)
+                    {
+                        geslaagdOfNiet = "Onderscheiding!";
+                    }
+                    else
+                    {
+                        geslaagdOfNiet = "Iets is mis gegaan in deze toepassing. Probeer opnieuw!";
+                    }
+
+                    // Berkenen einde (naam + aantalIngegevenRes + gemiddelde + laagsteGetal + grootsteGetal + geslaagdOfNiet)
+                    einde = $"Naam: {naam}{Environment.NewLine}" +
+                        $"Aantal ingegeven resultaten: {aantalIngegevenRes}{Environment.NewLine}" +
+                        $"Gemiddelde: {gemiddelde}{Environment.NewLine}" +
+                        $"Kleinste resultaat: {laagsteGetal}{Environment.NewLine}" +
+                        $"Grootste resultaat: {grootsteGetal}{Environment.NewLine}" +
+                        $"Conclusie: {geslaagdOfNiet}{Environment.NewLine}";
                 }
             } 
 
