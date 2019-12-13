@@ -57,9 +57,9 @@ namespace Statistiek
         static void Main(string[] args)
         {
             //DECLARATION
-            string voornaam, familienaam, res, naam, geslaagdOfNiet, einde;
-            byte aantalIngegevenRes = 1, onvoldoendes = 0;
-            float resultaat, gemiddelde, laagsteGetal, grootsteGetal, totaal = 0;
+            string voornaam, familienaam, res, naam, geslaagdOfNiet, einde = "";
+            byte aantalIngegevenRes = 0, onvoldoendes = 0;
+            decimal resultaat, gemiddelde, laagsteGetal, grootsteGetal, totaal = 0;
             bool isResultaatOk;
 
 
@@ -73,16 +73,24 @@ namespace Statistiek
             // Vraag resultaat
             res = Vraag("Geef het resultaat/de resultaten in, in procent (max 1 getal na komma): ");
 
+            resultaat = decimal.Parse(res);
 
             //PROCESSING
             while (res != "")
             {
+                // Bereken totaal
+                totaal += resultaat;
+
                 // resultaten blijven vragen tot het leeg word gelaten
                 res = Vraag("Geef het resultaat/de resultaten in, in procent (max 1 getal na komma): ");
 
                 // Berkenen totaal (totaal += resultaat)
-                resultaat = float.Parse(res);
-                totaal +=  resultaat;
+                isResultaatOk = decimal.TryParse(res, out resultaat);
+
+                if (isResultaatOk == false)
+                {
+                    res = "";
+                }
 
                 // Berkenen onvoldoendes
                 if (resultaat < 50)
@@ -102,10 +110,12 @@ namespace Statistiek
                     gemiddelde = totaal / aantalIngegevenRes;
 
                     // Berkenen laagsteGetal
-
+                    // weet ik niet meer
+                    laagsteGetal = 0;
 
                     // Berkenen grootsteGetal
-
+                    // weet ik niet meer
+                    grootsteGetal = 100;
 
                     // Berkenen isGeslaagd 
                     //(
@@ -132,17 +142,19 @@ namespace Statistiek
 
                     // Berkenen einde (naam + aantalIngegevenRes + gemiddelde + laagsteGetal + grootsteGetal + geslaagdOfNiet)
                     einde = $"Naam: {naam}{Environment.NewLine}" +
-                        $"Aantal ingegeven resultaten: {aantalIngegevenRes}{Environment.NewLine}" +
-                        $"Gemiddelde: {gemiddelde}{Environment.NewLine}" +
-                        $"Kleinste resultaat: {laagsteGetal}{Environment.NewLine}" +
-                        $"Grootste resultaat: {grootsteGetal}{Environment.NewLine}" +
-                        $"Conclusie: {geslaagdOfNiet}{Environment.NewLine}";
-                }
-            } 
+                        $"Aantal ingegeven resultaten:  {aantalIngegevenRes}{Environment.NewLine}" +
+                        $"Gemiddelde:                   {gemiddelde}{Environment.NewLine}" +
+                        $"Kleinste resultaat:           {laagsteGetal}{Environment.NewLine}" +
+                        $"Grootste resultaat:           {grootsteGetal}{Environment.NewLine}" +
+                        $"Conclusie:                    {geslaagdOfNiet}{Environment.NewLine}";
+                } 
+            }
 
 
             //OUPUT
-            
+            // Toon einde
+            Console.WriteLine(einde);
+            Console.ReadLine();
 
 
         }
