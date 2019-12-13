@@ -1,4 +1,9 @@
 ﻿// 5ITN11 - 2019-12-13 - Koen Van der Plas - Statistiek
+/*
+ * OPGAVE:
+ * =======
+ *  
+*/
 using System;
 using System.Collections.Generic;
 using System.Linq;
